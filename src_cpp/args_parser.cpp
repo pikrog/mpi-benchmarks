@@ -296,6 +296,22 @@ std::string basename(const char *name) {
 	}
 	return file_name;
 }
+#else
+std::string basename(const char *name) {
+    if(!name || !*name)
+        return ".";
+    std::string name_(name);
+    auto i = name_.length() - 1;
+    while(i > 0 && name_[i] == '/')
+        --i;
+    std::size_t len = 1;
+    while(i > 0 && name_[i - 1] != '/') {
+        --i;
+        ++len;
+    }
+    auto extractedName = name_.substr(i, len);
+    return extractedName;
+}
 #endif
 
 void args_parser::print_help_advice() const {
